@@ -7,8 +7,11 @@
 [![Tests](https://img.shields.io/badge/tests-128%20passing-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.12+-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)]()
 
 **MyAgent is a production-ready CLI tool that brings AI assistance directly to your terminal.**
+
+> 🚀 Autonomous coding • 💬 Conversation history • 🎨 Beautiful UI • 🔌 Multi-provider support
 
 It can understand your project, read and modify files, run commands, execute tests, and help you build and debug software autonomously.
 
@@ -70,8 +73,8 @@ It can understand your project, read and modify files, run commands, execute tes
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/myagent.git
-cd myagent
+git clone https://github.com/euwitgroup/EU_agent_Cli.git
+cd EU_agent_Cli
 
 # Install MyAgent globally (makes 'myagent' command available everywhere)
 pip install -e .
@@ -847,6 +850,4 @@ Future enhancements:
 ---
 
 **Status:** Production Ready ✅ | 128 Tests Passing ✅ | Fully Documented ✅
-#   E U _ a g e n t _ C l i 
- 
- 
+#

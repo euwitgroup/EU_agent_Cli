@@ -192,8 +192,7 @@ def main(
                 
                 # Prompt for API key
                 console.print(f"\n[cyan]Configuring {selected_provider}...[/cyan]")
-                console.print(f"[dim]Your API key will be hidden as you type[/dim]")
-                api_key_input = typer.prompt(f"\n{selected_provider.upper()} API key (hidden)", hide_input=True)
+                api_key_input = typer.prompt(f"{selected_provider.upper()} API key")
                 
                 # Prompt for model
                 base_url = None
@@ -376,8 +375,7 @@ def provider_add(
 
     # Prompt for missing required parameters
     if not api_key:
-        console.print("[dim]Your API key will be hidden as you type[/dim]")
-        api_key = typer.prompt(f"\n{provider.upper()} API key (hidden)", hide_input=True)
+        api_key = typer.prompt(f"{provider.upper()} API key")
     
     if not model:
         model = typer.prompt(f"Model name (e.g., {'gpt-4' if provider == 'openai' else 'claude-3-5-sonnet-20241022' if provider == 'anthropic' else 'your-model'})")

@@ -1,11 +1,24 @@
 """Tests for configuration module."""
 
 import pytest
+import os
 from myagent.config import Settings, get_settings, reset_settings
 
 
-def test_settings_defaults():
+@pytest.fixture
+def clean_env(monkeypatch):
+    """Clean environment fixture that removes provider-related env vars."""
+    monkeypatch.delenv('MYAGENT_PROVIDER', raising=False)
+    monkeypatch.delenv('OPENAI_API_KEY', raising=False)
+    monkeypatch.delenv('ANTHROPIC_API_KEY', raising=False)
+    monkeypatch.delenv('CUSTOM_API_KEY', raising=False)
+    reset_settings()
+
+
+def test_settings_defaults(clean_env, monkeypatch):
     """Test default configuration values."""
+    #Prevent loading .env file
+    monkeypatch.setenv('MYAGENT_PROVIDER', 'anthropic')
     reset_settings()
     settings = Settings()
 
@@ -15,8 +28,9 @@ def test_settings_defaults():
     assert settings.myagent_auto_approve_reads is True
 
 
-def test_settings_provider_override():
+def test_settings_provider_override(clean_env, monkeypatch):
     """Test provider override functionality."""
+    monkeypatch.setenv('MYAGENT_PROVIDER', 'anthropic')
     reset_settings()
     settings = Settings()
 

@@ -293,8 +293,13 @@ class TestProviderRouter:
 
         assert ProviderRouter.validate_provider_config("openai") is True
 
-    def test_validate_provider_config_missing_key(self):
+    def test_validate_provider_config_missing_key(self, monkeypatch, tmp_path):
         """Test validating config with missing key."""
+        # Change to a temp directory without .env file
+        monkeypatch.chdir(tmp_path)
+        # Clear API key from environment
+        monkeypatch.delenv('OPENAI_API_KEY', raising=False)
         reset_settings()
-        with pytest.raises(ValueError, match="API key is required"):
+        
+        with pytest.raises(ValueError, match="OpenAI API key is required"):
             ProviderRouter.validate_provider_config("openai")

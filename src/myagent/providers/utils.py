@@ -150,17 +150,19 @@ def save_provider_config(
     api_key: str,
     model: str,
     base_url: Optional[str] = None,
-    env_file: str = ".env",
+    env_file: Optional[str] = None,
 ) -> bool:
     """
     Save provider configuration to .env file.
+    
+    By default, saves to ~/.myagent/.env so it's available globally.
 
     Args:
         provider: Provider name
         api_key: API key
         model: Model name
         base_url: Base URL (for custom provider)
-        env_file: Path to .env file
+        env_file: Path to .env file (defaults to ~/.myagent/.env)
 
     Returns:
         True if saved successfully
@@ -168,7 +170,13 @@ def save_provider_config(
     try:
         from pathlib import Path
 
-        env_path = Path(env_file)
+        # Default to home directory
+        if env_file is None:
+            home_config_dir = Path.home() / ".myagent"
+            home_config_dir.mkdir(exist_ok=True)
+            env_path = home_config_dir / ".env"
+        else:
+            env_path = Path(env_file)
         
         # Read existing content
         existing_lines = []

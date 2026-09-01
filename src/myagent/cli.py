@@ -216,6 +216,7 @@ def main(
                 
                 if saved:
                     console.print(f"\n[green]✓ Configuration saved![/green]")
+                    console.print(f"[dim]Config saved to: ~/.myagent/.env[/dim]")
                     console.print(f"[dim]Restarting with your configuration...[/dim]\n")
                     
                     # Reload settings
@@ -421,9 +422,10 @@ def provider_add(
         )
 
         if saved:
-            console.print(f"[green]✓[/green] Configuration saved to .env!")
+            console.print(f"[green]✓[/green] Configuration saved!")
+            console.print(f"[dim]Config location: ~/.myagent/.env[/dim]")
             console.print(f"\n[dim]You can now run:[/dim]")
-            console.print(f"[cyan]  python -m myagent main[/cyan]")
+            console.print(f"[cyan]  myagent main[/cyan]")
         else:
             console.print(f"[yellow]⚠[/yellow] Failed to save configuration")
             raise typer.Exit(1)

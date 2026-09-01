@@ -1,6 +1,7 @@
 """Configuration settings for MyAgent."""
 
 import logging
+import os
 from pathlib import Path
 from typing import Literal, Optional
 
@@ -8,11 +9,39 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+def find_env_file() -> Optional[Path]:
+    """
+    Find .env file in multiple locations.
+    Priority:
+    1. Current directory
+    2. Home directory (~/.myagent/.env)
+    3. Installation directory
+    """
+    # Check current directory
+    cwd_env = Path.cwd() / ".env"
+    if cwd_env.exists():
+        return cwd_env
+    
+    # Check home directory
+    home_env = Path.home() / ".myagent" / ".env"
+    if home_env.exists():
+        return home_env
+    
+    # Check installation directory (where this file is)
+    install_dir = Path(__file__).parent.parent.parent.parent
+    install_env = install_dir / ".env"
+    if install_env.exists():
+        return install_env
+    
+    # No .env file found, return home directory path (where we'll create it)
+    return home_env
+
+
 class Settings(BaseSettings):
     """MyAgent configuration settings with environment variable support."""
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=str(find_env_file()) if find_env_file() else None,
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",

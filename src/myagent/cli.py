@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 from rich.table import Table
 from typing_extensions import Annotated
+from dotenv import load_dotenv
 
 from myagent import __version__
 from myagent.config import get_settings
@@ -219,11 +220,20 @@ def main(
                     console.print(f"[dim]Config saved to: ~/.myagent/.env[/dim]")
                     console.print(f"[dim]Restarting with your configuration...[/dim]\n")
                     
-                    # Reload settings
+                    # Force reload environment variables from the new .env file
+                    import os
+                    from dotenv import load_dotenv
+                    
+                    # Load the new .env file
+                    home_env = Path.home() / ".myagent" / ".env"
+                    load_dotenv(home_env, override=True)
+                    
+                    # Reset settings to force reload
                     from myagent.config import reset_settings
                     reset_settings()
                     settings = get_settings()
                     
+                    # Apply overrides again
                     if selected_provider:
                         settings.provider_override = selected_provider
                     if model_input:

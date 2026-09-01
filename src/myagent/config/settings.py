@@ -17,10 +17,16 @@ def find_env_file() -> Optional[Path]:
     2. Home directory (~/.myagent/.env)
     3. Installation directory
     """
-    # Check current directory
+    # Check current directory - but only use it if it has MyAgent config
     cwd_env = Path.cwd() / ".env"
     if cwd_env.exists():
-        return cwd_env
+        try:
+            content = cwd_env.read_text()
+            # Only use this .env if it has MyAgent configuration
+            if any(key in content for key in ["MYAGENT_PROVIDER", "CUSTOM_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_API_KEY"]):
+                return cwd_env
+        except Exception:
+            pass  # Skip if we can't read the file
     
     # Check home directory
     home_env = Path.home() / ".myagent" / ".env"

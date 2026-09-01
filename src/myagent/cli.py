@@ -169,16 +169,79 @@ def main(
         # Validate API key
         api_key = settings.get_api_key()
         if not api_key:
-            display_error(
-                f"No API key found for provider '{settings.get_provider()}'.\n\n"
-                f"Please set the appropriate environment variable:\n"
-                f"  - OpenAI: OPENAI_API_KEY\n"
-                f"  - Anthropic: ANTHROPIC_API_KEY\n"
-                f"  - Custom: CUSTOM_API_KEY\n\n"
-                f"Or create a .env file with your credentials.",
-                title="Configuration Error",
-            )
-            raise typer.Exit(1)
+            console = get_console()
+            console.print("\n[yellow]⚠ No API key found![/yellow]\n")
+            console.print(f"[dim]Provider '{settings.get_provider()}' is not configured.[/dim]\n")
+            
+            if typer.confirm("Would you like to configure a provider now?", default=True):
+                console.print("\n[cyan]Let's set up your AI provider...[/cyan]\n")
+                
+                # Import inquirer for interactive selection
+                import inquirer
+                
+                questions = [
+                    inquirer.List(
+                        'provider',
+                        message="Select AI provider",
+                        choices=['anthropic', 'openai', 'custom'],
+                        default='anthropic'
+                    ),
+                ]
+                answers = inquirer.prompt(questions)
+                selected_provider = answers['provider']
+                
+                # Prompt for API key
+                console.print(f"\n[cyan]Configuring {selected_provider}...[/cyan]")
+                api_key_input = typer.prompt(f"{selected_provider.upper()} API key", hide_input=True)
+                
+                # Prompt for model
+                base_url = None
+                if selected_provider == 'anthropic':
+                    model_input = typer.prompt("Model name", default="claude-3-5-sonnet-20241022")
+                elif selected_provider == 'openai':
+                    model_input = typer.prompt("Model name", default="gpt-4-turbo-preview")
+                else:  # custom
+                    model_input = typer.prompt("Model name")
+                    base_url = typer.prompt("Base URL (e.g., https://api.example.com/v1)")
+                
+                # Save configuration
+                from myagent.providers.utils import save_provider_config
+                
+                saved = save_provider_config(
+                    provider=selected_provider,
+                    api_key=api_key_input,
+                    model=model_input,
+                    base_url=base_url if selected_provider == 'custom' else None,
+                )
+                
+                if saved:
+                    console.print(f"\n[green]✓ Configuration saved![/green]")
+                    console.print(f"[dim]Restarting with your configuration...[/dim]\n")
+                    
+                    # Reload settings
+                    from myagent.config import reset_settings
+                    reset_settings()
+                    settings = get_settings()
+                    
+                    if selected_provider:
+                        settings.provider_override = selected_provider
+                    if model_input:
+                        settings.model_override = model_input
+                else:
+                    display_error("Failed to save configuration", title="Configuration Error")
+                    raise typer.Exit(1)
+            else:
+                display_error(
+                    f"No API key found for provider '{settings.get_provider()}'.\n\n"
+                    f"Please set the appropriate environment variable:\n"
+                    f"  - OpenAI: OPENAI_API_KEY\n"
+                    f"  - Anthropic: ANTHROPIC_API_KEY\n"
+                    f"  - Custom: CUSTOM_API_KEY\n\n"
+                    f"Or create a .env file with your credentials.\n\n"
+                    f"You can also run: myagent provider add --provider anthropic",
+                    title="Configuration Error",
+                )
+                raise typer.Exit(1)
 
         # Display banner (only in interactive mode or verbose)
         if not task or verbose:

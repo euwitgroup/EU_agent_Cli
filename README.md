@@ -4,7 +4,8 @@
 
 ### AI-Powered Coding Agent for Terminal
 
-[![Tests](https://img.shields.io/badge/tests-128%20passing-brightgreen)]()
+[![Tests](https://github.com/euwitgroup/EU_agent_Cli/actions/workflows/tests.yml/badge.svg)](https://github.com/euwitgroup/EU_agent_Cli/actions/workflows/tests.yml)
+[![Pylint](https://github.com/euwitgroup/EU_agent_Cli/actions/workflows/pylint.yml/badge.svg)](https://github.com/euwitgroup/EU_agent_Cli/actions/workflows/pylint.yml)
 [![Python](https://img.shields.io/badge/python-3.12+-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)]()

@@ -1,12 +1,22 @@
-# MyAgent
+<div align="center">
 
-**AI-powered coding agent for terminal**
+# 🤖 MyAgent
 
-MyAgent is a production-ready CLI tool that brings AI assistance directly to your terminal. It can understand your project, read and modify files, run commands, execute tests, and help you build and debug software autonomously.
+### AI-Powered Coding Agent for Terminal
 
 [![Tests](https://img.shields.io/badge/tests-128%20passing-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.12+-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
+
+**MyAgent is a production-ready CLI tool that brings AI assistance directly to your terminal.**
+
+It can understand your project, read and modify files, run commands, execute tests, and help you build and debug software autonomously.
+
+[Quick Start](#-quick-start) • [Features](#-features) • [Installation](#-installation) • [Documentation](#-documentation)
+
+</div>
+
+---
 
 ## ✨ Features
 
@@ -837,5 +847,6 @@ Future enhancements:
 ---
 
 **Status:** Production Ready ✅ | 128 Tests Passing ✅ | Fully Documented ✅
-#   E U _ a g e n t _ C l i  
+#   E U _ a g e n t _ C l i 
+ 
  
